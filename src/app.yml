@@ -1,0 +1,111 @@
+name: ipfs
+version: "0.1.0"
+about: "Command line interface for the The InterPlanetary File System: A Global, Decentralized, p2p network for sharing data."
+args:
+    - config:
+        short: c
+        long: config
+        value_name: CONFIG
+        takes_value: true
+        help: Specify the config file used by ipfs
+    - debug:
+        short: D
+        long: debug
+        help: Run ipfs command in debug mode
+group:
+    - basic
+subcommands:
+    - add:
+        about: Add a file to IPFS or read data from stdin and get resulting Content ID
+        takes_value: true
+        value_name: FILE
+        args:
+            - recursive:
+                short: r
+                help: Recursively add files (used for directories)
+            - no-pin:
+                help: Prevent pinning file when adding
+            - wrap-directory:
+                short: w
+                help: Wrap file in directory to preserve file metadata
+            - output:
+                help: Optionally specify the output .twld file.
+                required: false
+                short: o
+                takes_value: true
+                value_name: OUTPUT FILE
+    - rm:
+        about: Remove specific data from local storage
+        takes_value: true
+        value_name: CID
+        required: true
+        args:
+            - recursive:
+                short: r
+                help: Recursively remove linked data (Be Careful!)
+    - get:
+        about: Download CID Tree data
+        args:
+            - CID:
+                required: true
+                index: 1
+        takes_value: true
+        value_name: CID
+        required: true
+    - block:
+        about: Interact with raw ipfs blocks.
+        subcommands:
+             - get:
+                about: Print data of single IPFS Block (non-recursive)
+                args:
+                    - CID:
+                        required: true
+                        index: 1
+             - put:
+                about: Create IPFS Block from file or stdin
+                args:
+                    - FILE:
+                        required: false
+                        index: 1
+             - rm:
+                about: Delete local IPFS Block
+                args:
+                    - CID:
+                        required: true
+                        index: 1
+             - stat:
+                about: Print size and peer provider information about block
+                args:
+                    - CID:
+                        required: true
+                        index: 1
+    - daemon:
+        about: Start IFPS Daemon
+        args:
+            - enable-pubsub-experiment:
+                short: r
+                help: The input .wld file.
+            - enable-namesys-pubsub:
+                help: Prevent pinning file when adding
+            - enable-gc:
+                short: w
+                help: Wrap file in directory to preserve file metadata
+            - disable-transport-encryption:
+                help: Optionally specify the output .twld file.
+                required: false
+                short: o
+                takes_value: true
+                value_name: OUTPUT FILE
+    - dht:
+        about: Query the IPFS Distributed Hash Table
+        subcommands:
+            - findpeer:
+                takes_value: true
+                required: true
+                value_name: <PeerID>
+                help: Find the multiaddresses associated with a Peer ID.
+            - findprovs: 
+                takes_value: true
+                required: true
+                value_name: <CID>
+                help: Find peers that can provide data from a Content ID
